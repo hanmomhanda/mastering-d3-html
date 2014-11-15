@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Dashboard</title>
+
+    <link href="/mastering-d3-html/assets/css/book.css" rel="stylesheet">
+    <script src="/mastering-d3-html/assets/js/lib/d3.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/mastering-d3-html">mastering d3.js</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Chapters <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/mastering-d3-html/chapter02/">2 Creating Reusable Charts</a></li>
+                        <li><a href="/mastering-d3-html/chapter03/">3 Beyond SVG</a></li>
+                        <li><a href="/mastering-d3-html/chapter04/">4 Creating UI Elements</a></li>
+                        <li><a href="/mastering-d3-html/chapter05/">5 Advanced UI Elements</a></li>
+                        <li><a href="/mastering-d3-html/chapter06/">6 Interaction Between Charts</a></li>
+                        <li><a href="/mastering-d3-html/chapter07/">7 Creating a Charting Package</a></li>
+                        <li><a href="/mastering-d3-html/chapter08/">8 Deploying the Visualization</a></li>
+                        <li><a href="/mastering-d3-html/chapter09/">9 Creating a Dashboard</a></li>
+                        <li><a href="/mastering-d3-html/chapter10/">10 Creating Maps</a></li>
+                        <li><a href="/mastering-d3-html/chapter11/">11 Advanced Maps</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+
+        <p><link rel="stylesheet" href="/mastering-d3-html/chapter09/css/dashboard.css"></p>
+
+<script src="/mastering-d3-html/chapter09/js/dashboard.js"></script>
+
+
+<script src="/mastering-d3-html/chapter09/js/gendata.js"></script>
+
+
+
+
+<div>
+    <style>
+        .ds-section {
+            border-top: solid 3px #777;
+            background-color: #fafafa;
+        }
+
+        .ds-section-title {
+            color: #777;
+            font-size: 16px;
+            font-weight: bold;
+            font-variant: small-caps;
+        }
+
+        .ds-dashboard-title {
+            color: #555;
+            font-size: 18px;
+            font-weight: bold;
+            font-variant: small-caps;
+        }
+    </style>
+</div>
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <p class="ds-dashboard-title">class dashboard</p>
+    </div>
+    <div class="col-md-6 ds-section">
+        <p class="ds-section-title">students</p>
+        <div id="section-students"></div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="section-courses" class="ds-section">
+                    <p class="ds-section-title">courses</p>
+                    <table class="table table-condensed table-fluid">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="ds-section">
+                    <p class="ds-section-title">class</p>
+                    <div id="section-class"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Students Section -->
+
+
+<script>
+    // Create and configure an instance of the student's table
+    var tableStudents = dashboard.chart.studentsTable()
+        .from(classData.from)
+        .to(classData.to)
+        .height(26);
+
+    // Select the container element, bind the data and invoke the chart
+    d3.select('div#section-students')
+        .data([classData.students])
+        .call(tableStudents);
+</script>
+
+
+
+
+<!-- Course Section -->
+
+
+<script>
+    var courses = dashboard.chart.tableCourses()
+        .from(classData.from)
+        .to(classData.to)
+        .height(22);
+
+    d3.select('#section-courses')
+        .data([classData.classes])
+        .call(courses);
+</script>
+
+
+
+
+<!-- Class Section -->
+
+
+<script>
+    var classChart = dashboard.chart.tableClass()
+        .from(classData.from)
+        .to(classData.to)
+        .height(20);
+
+    console.log(classData.weeklyMetrics);
+
+    d3.select('#section-class')
+        .data([classData.weeklyMetrics])
+        .call(classChart);
+</script>
+
+
+
+
+
+        <div class="footer"></div>
+    </div>
+    <script src="/mastering-d3-html/assets/js/lib/jquery.min.js"></script>
+    <script src="/mastering-d3-html/assets/js/lib/bootstrap.min.js"></script>
+</body>
+</html>

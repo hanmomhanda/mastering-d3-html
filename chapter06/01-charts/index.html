@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Stock Charts</title>
+
+    <link href="/mastering-d3-html/assets/css/book.css" rel="stylesheet">
+    <script src="/mastering-d3-html/assets/js/lib/d3.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/mastering-d3-html">mastering d3.js</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Chapters <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/mastering-d3-html/chapter02/">2 Creating Reusable Charts</a></li>
+                        <li><a href="/mastering-d3-html/chapter03/">3 Beyond SVG</a></li>
+                        <li><a href="/mastering-d3-html/chapter04/">4 Creating UI Elements</a></li>
+                        <li><a href="/mastering-d3-html/chapter05/">5 Advanced UI Elements</a></li>
+                        <li><a href="/mastering-d3-html/chapter06/">6 Interaction Between Charts</a></li>
+                        <li><a href="/mastering-d3-html/chapter07/">7 Creating a Charting Package</a></li>
+                        <li><a href="/mastering-d3-html/chapter08/">8 Deploying the Visualization</a></li>
+                        <li><a href="/mastering-d3-html/chapter09/">9 Creating a Dashboard</a></li>
+                        <li><a href="/mastering-d3-html/chapter10/">10 Creating Maps</a></li>
+                        <li><a href="/mastering-d3-html/chapter11/">11 Advanced Maps</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+
+        <script src="/mastering-d3-html/chapter06/stocks/js/lib/stockcharts.js"></script>
+
+
+
+
+<div>
+    <style>
+        .axis path, line{
+            fill: none;
+            stroke: #222;
+            shape-rendering: crispEdges;
+        }
+
+        .axis text {
+            font-size: 11px;
+        }
+
+        .stock-area {
+            fill: #ddd;
+            stroke: #aaa;
+            stroke-width: 1;
+        }
+
+        .brush rect {
+            fill: #204a87;
+            stroke: #bbb;
+            stroke-width: 0.5;
+            stroke-opacity: 0.4;
+            fill-opacity: 0.2;
+        }
+    </style>
+</div>
+
+
+
+
+<h2 class="section-subtitle">Stock Title Chart</h2>
+
+
+
+
+<div id="chart01"></div>
+
+
+
+
+<script>
+    // Create and configure the chart
+    var titleChart = stockTitleChart()
+        .title(function(d) { return d.symbol + ' ' + d.name; });
+
+    // Select the container element, bind the dataset and invoke the chart
+    d3.select('div#chart01')
+        .data([{symbol: 'AAPL', name: 'Apple Inc.'}])
+        .call(titleChart);
+</script>
+
+
+
+
+<h2 class="section-subtitle">Stock Area Chart: Time Extent</h2>
+
+
+
+
+<div id="chart03"></div>
+
+
+
+
+<script>
+    var detailAreaChart = stockAreaChart()
+        .value(function(d) { return d.price; })
+        .brush(false);
+
+    d3.json('/mastering-d3-html/chapter06/stocks/data/aapl.json', function(error, json) {
+
+        if (error) { return error; }
+
+        var data = json.values,
+            from = new Date(data[0].date),
+            to = new Date(data[data.length - 1].date);
+
+        detailAreaChart.timeExtent([from, to]);
+
+        d3.select('div#chart03')
+            .data([data])
+            .call(detailAreaChart);
+    });
+</script>
+
+
+
+
+<h2 class="section-subtitle">Stock Area Chart: Selecting the Time Interval</h2>
+
+
+
+
+<div id="chart02"></div>
+
+
+
+
+<script>
+    var contextAreaChart = stockAreaChart()
+        .height(60)
+        .value(function(d) { return d.price; })
+        .yaxis(false)
+        .brushListener(function(extent) {
+            console.log(extent);
+        });
+
+    d3.json('/mastering-d3-html/chapter06/stocks/data/aapl.json', function(error, json) {
+
+        if (error) {
+            throw error;
+        }
+
+        d3.select('div#chart02')
+            .data([json.values])
+            .call(contextAreaChart);
+    });
+</script>
+
+
+
+
+
+        <div class="footer"></div>
+    </div>
+    <script src="/mastering-d3-html/assets/js/lib/jquery.min.js"></script>
+    <script src="/mastering-d3-html/assets/js/lib/bootstrap.min.js"></script>
+</body>
+</html>
